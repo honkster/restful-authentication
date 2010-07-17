@@ -5,13 +5,13 @@ module Authentication
       recipient.extend(ModelClassMethods)
       recipient.class_eval do
         include ModelInstanceMethods
-        
+
         # Virtual attribute for the unencrypted password
         attr_accessor :password
-        validates_presence_of     :password,                   :if => :password_required?
-        validates_presence_of     :password_confirmation,      :if => :password_required?
-        validates_confirmation_of :password,                   :if => :password_required?
-        validates_length_of       :password, :within => 6..40, :if => :password_required?
+        validates_presence_of     :password,                   :if => :password_required?, :message => 'Please choose a password'
+        validates_presence_of     :password_confirmation,      :if => :password_required?, :message => 'Please confirm your password'
+        validates_confirmation_of :password,                   :if => :password_required?, :message => 'Passwords do not match'
+        validates_length_of       :password, :within => 6..40, :if => :password_required?, :message => 'Password must be at least 6 characters'
         before_save :encrypt_password
       end
     end # #included directives
@@ -53,7 +53,7 @@ module Authentication
       # before filter 
       def encrypt_password
         return if password.blank?
-        self.salt = self.class.make_token if new_record?
+        self.salt = self.class.make_token if salt == nil
         self.crypted_password = encrypt(password)
       end
       def password_required?
