@@ -1,6 +1,6 @@
 
 h3. Authentication security projects for a later date
--
+-x
 
 * Track 'failed logins this hour' and demand a captcha after say 5 failed logins
   ("RECAPTCHA plugin.":http://agilewebdevelopment.com/plugins/recaptcha)
